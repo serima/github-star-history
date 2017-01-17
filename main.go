@@ -34,12 +34,18 @@ func main() {
 		}
 		p = resp.NextPage
 	}
-	fmt.Println(summary)
+	printTallySummary(summary)
 }
 
 func printStargazers(stargazer *github.Stargazer) {
 	user := stargazer.User
 	fmt.Printf("starred_at:%v\tuser_login:%v\n", stargazer.StarredAt, *user.Login)
+}
+
+func printTallySummary(summary map[string]int) {
+	for key, value := range summary {
+		fmt.Printf("%v\t%v\n", key, value)
+	}
 }
 
 func tallyStargazers(stargazer *github.Stargazer, summary map[string]int) {
