@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "time"
 
 import "github.com/google/go-github/github"
 
@@ -12,6 +13,12 @@ const (
 func main() {
 	summary := map[string]int{}
 	client := github.NewClient(nil)
+
+	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
+	fmt.Println("========")
+	fmt.Println(ctime)
+	fmt.Println("========")
+
 	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
 	if err != nil {
 		panic(err)
@@ -37,6 +44,19 @@ func main() {
 	printTallySummary(summary)
 }
 
+// get CreatedAt from repo
+func getCreatedAtFromRepo(client *github.Client, owner string, repo string) (createdAt time.Time, err error) {
+	repoinfo, _, err := client.Repositories.Get(owner, repo)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var shortForm = "2006-01-02 15:04:05 -0700 UTC"
+	ctime, _ := time.Parse(shortForm, fmt.Sprintf("%s", repoinfo.CreatedAt))
+	// ab := ctime.AddDate(0, 1, 0)
+
+	return ctime, nil
+}
 func printStargazers(stargazer *github.Stargazer) {
 	user := stargazer.User
 	fmt.Printf("starred_at:%v\tuser_login:%v\n", stargazer.StarredAt, *user.Login)
