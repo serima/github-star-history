@@ -15,9 +15,11 @@ func main() {
 	client := github.NewClient(nil)
 
 	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
+
 	fmt.Println("========")
 	fmt.Println(ctime)
 	fmt.Println("========")
+	iterateMonth(ctime)
 
 	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
 	if err != nil {
@@ -57,6 +59,14 @@ func getCreatedAtFromRepo(client *github.Client, owner string, repo string) (cre
 
 	return ctime, nil
 }
+
+func iterateMonth(ctime time.Time) {
+	now := time.Now()
+	for d := ctime; now.After(d); d = d.AddDate(0, 1, 0) {
+		fmt.Println(d)
+	}
+}
+
 func printStargazers(stargazer *github.Stargazer) {
 	user := stargazer.User
 	fmt.Printf("starred_at:%v\tuser_login:%v\n", stargazer.StarredAt, *user.Login)
