@@ -19,7 +19,9 @@ func main() {
 	fmt.Println("========")
 	fmt.Println(ctime)
 	fmt.Println("========")
-	iterateMonth(ctime)
+	months := iterateMonth(ctime)
+	fmt.Println(months)
+	fmt.Println("========")
 
 	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
 	if err != nil {
@@ -60,11 +62,14 @@ func getCreatedAtFromRepo(client *github.Client, owner string, repo string) (cre
 	return ctime, nil
 }
 
-func iterateMonth(ctime time.Time) {
+func iterateMonth(ctime time.Time) []string {
+	months := []string{}
 	now := time.Now()
 	for d := ctime; now.After(d); d = d.AddDate(0, 1, 0) {
-		fmt.Println(d)
+		months = append(months, fmt.Sprintf("%s", d)[0:7])
 	}
+
+	return months
 }
 
 func printStargazers(stargazer *github.Stargazer) {
