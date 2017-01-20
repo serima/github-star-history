@@ -25,7 +25,7 @@ func main() {
 	summary := map[string]int{}
 	initSummary(summary, months)
 
-　// 1ページの読み込み
+	// 1ページ目の読み込み
 	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
 	if err != nil {
 		panic(err)
@@ -35,7 +35,7 @@ func main() {
 		tallyStargazers(stargazer, summary)
 	}
 
-  // 2ページ目以降の読み込み
+	// 2ページ目以降の読み込み
 	p := resp.NextPage
 	for p != 0 {
 		opt := &github.ListOptions{Page: p}
