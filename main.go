@@ -1,9 +1,11 @@
 package main
 
-import "fmt"
-import "time"
+import (
+	"fmt"
+	"time"
 
-import "github.com/google/go-github/github"
+	"github.com/google/go-github/github"
+)
 
 const (
 	owner = "kevincobain2000"
