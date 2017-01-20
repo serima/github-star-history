@@ -69,7 +69,6 @@ func getCreatedAtFromRepo(client *github.Client, owner string, repo string) (cre
 	}
 	var shortForm = "2006-01-02 15:04:05 -0700 UTC"
 	ctime, _ := time.Parse(shortForm, fmt.Sprintf("%s", repoinfo.CreatedAt))
-	// ab := ctime.AddDate(0, 1, 0)
 
 	return ctime, nil
 }
