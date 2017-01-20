@@ -76,5 +76,6 @@
 
 ## Todo
 
-* [] Sort
-* [] Cache
+- [ ] Sort
+- [ ] Env
+- [ ] Cache
