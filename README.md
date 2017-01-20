@@ -74,6 +74,12 @@
 2012-01 70
 ```
 
+## Build
+
+```
+$ go build -o bin/ghs main.go
+```
+
 ## Todo
 
 - [ ] Sort
