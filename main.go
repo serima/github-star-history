@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -13,8 +14,12 @@ const (
 )
 
 func main() {
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: "12ddd98b64283de6a080e7c3723e56f78bf2a6dd"},
+	)
+	tc := oauth2.NewClient(oauth2.NoContext, ts)
 
-	client := github.NewClient(nil)
+	client := github.NewClient(tc)
 	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
 	months := iterateMonth(ctime)
 	summary := map[string]int{}
