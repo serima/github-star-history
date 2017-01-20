@@ -11,7 +11,7 @@ const (
 )
 
 func main() {
-	summary := map[string]int{}
+
 	client := github.NewClient(nil)
 
 	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
@@ -22,13 +22,15 @@ func main() {
 	months := iterateMonth(ctime)
 	fmt.Println(months)
 	fmt.Println("========")
+	summary := map[string]int{}
+	initSummary(summary, months)
 
 	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
 	if err != nil {
 		panic(err)
 	}
 	for _, stargazer := range stargazers {
-		printStargazers(stargazer)
+		//printStargazers(stargazer)
 		tallyStargazers(stargazer, summary)
 	}
 
@@ -40,12 +42,18 @@ func main() {
 			panic(err)
 		}
 		for _, stargazer := range stargazers {
-			printStargazers(stargazer)
+			//printStargazers(stargazer)
 			tallyStargazers(stargazer, summary)
 		}
 		p = resp.NextPage
 	}
 	printTallySummary(summary)
+}
+
+func initSummary(summary map[string]int, months []string) {
+	for _, value := range months {
+		summary[value] = 0
+	}
 }
 
 // get CreatedAt from repo
