@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
-const (
-	owner = "kevincobain2000"
-	repo  = "ionic-photo-browser"
-)
-
 func main() {
+	slice := strings.Split(os.Args[1], "/")
+	owner := slice[0]
+	repo := slice[1]
+
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: "12ddd98b64283de6a080e7c3723e56f78bf2a6dd"},
 	)
