@@ -15,8 +15,10 @@ func main() {
 	owner := slice[0]
 	repo := slice[1]
 
+	token := os.Getenv("GITHUB_API_TOKEN")
+
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: "12ddd98b64283de6a080e7c3723e56f78bf2a6dd"},
+		&oauth2.Token{AccessToken: token},
 	)
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
 
