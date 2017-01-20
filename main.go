@@ -15,15 +15,8 @@ const (
 func main() {
 
 	client := github.NewClient(nil)
-
 	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
-
-	fmt.Println("========")
-	fmt.Println(ctime)
-	fmt.Println("========")
 	months := iterateMonth(ctime)
-	fmt.Println(months)
-	fmt.Println("========")
 	summary := map[string]int{}
 	initSummary(summary, months)
 
