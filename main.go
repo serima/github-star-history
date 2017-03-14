@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -16,20 +17,20 @@ func main() {
 	repo := slice[1]
 
 	token := os.Getenv("GITHUB_API_TOKEN")
-
+	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
-	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
-	ctime, _ := getCreatedAtFromRepo(client, owner, repo)
+	ctime, _ := getCreatedAtFromRepo(ctx, client, owner, repo)
 	months := iterateMonth(ctime)
 	summary := map[string]int{}
 	initSummary(summary, months)
 
 	// 1ページ目の読み込み
-	stargazers, resp, err := client.Activity.ListStargazers(owner, repo, nil)
+	stargazers, resp, err := client.Activity.ListStargazers(ctx, owner, repo, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -42,7 +43,7 @@ func main() {
 	p := resp.NextPage
 	for p != 0 {
 		opt := &github.ListOptions{Page: p}
-		stargazers, resp, err := client.Activity.ListStargazers(owner, repo, opt)
+		stargazers, resp, err := client.Activity.ListStargazers(ctx, owner, repo, opt)
 		if err != nil {
 			panic(err)
 		}
@@ -63,8 +64,8 @@ func initSummary(summary map[string]int, months []string) {
 }
 
 // get CreatedAt from repo
-func getCreatedAtFromRepo(client *github.Client, owner string, repo string) (createdAt time.Time, err error) {
-	repoinfo, _, err := client.Repositories.Get(owner, repo)
+func getCreatedAtFromRepo(ctx context.Context, client *github.Client, owner string, repo string) (createdAt time.Time, err error) {
+	repoinfo, _, err := client.Repositories.Get(ctx, owner, repo)
 	if err != nil {
 		fmt.Println(err)
 		return
